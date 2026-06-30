@@ -1,16 +1,63 @@
-# React + Vite
+# Pixie Dust Background Demo
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A recreation of the beautiful planet/pixie dust background effect from [p5aholic.me](https://p5aholic.me/), built with **React + Three.js + custom GLSL shaders**.
 
-Currently, two official plugins are available:
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)
+![Three.js](https://img.shields.io/badge/Three.js-r184-000?logo=three.js)
+![Vite](https://img.shields.io/badge/Vite-7-646CFF?logo=vite)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## How It Works
 
-## React Compiler
+The "planet" is actually a **flat plane** with a custom fragment shader — no 3D sphere involved. The illusion comes from:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. **Simplex noise** (Ashima Arts) — organic 2D noise function
+2. **Fractal Brownian Motion (FBM)** with **domain warping** — creates swirling cloud-like structures
+3. **Procedural grain texture** — adds subtle distortion and texture variation
+4. **Radial gradient blur texture** — creates the spherical falloff that reads as a "planet"
+5. **Time-based animation** — the noise field slowly drifts, giving the floating/rotating feel
 
-## Expanding the Oxlint configuration
+Mix between a dark `backColor` and bright `frontColor` based on the noise pattern.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Quick Start
+
+```bash
+npm install
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173)
+
+## Build for Production
+
+```bash
+npm run build
+npm run preview
+```
+
+## Project Structure
+
+```
+src/
+├── PixieDustBackground.jsx   # Three.js scene + shader component
+├── App.jsx                    # Main app with theme toggle
+├── App.css                    # Styles
+└── index.css                  # Reset
+```
+
+## Shader Parameters
+
+Tweak these in `PixieDustBackground.jsx`:
+
+| Uniform  | Default | Effect |
+|----------|---------|--------|
+| `param1` | 1.0     | Grain texture scale |
+| `param2` | 0.05    | Distortion amount |
+| `param3` | 0.2     | Noise frequency |
+
+## Credits
+
+Inspired by [Keita Yamada](https://p5aholic.me/) (p5aholic). Simplex noise by [Ashima Arts](https://github.com/ashima/webgl-noise).
+
+## License
+
+MIT
